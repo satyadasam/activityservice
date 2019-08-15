@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+       		http://www.springframework.org/schema/beans 
+       		http://www.springframework.org/schema/beans/spring-beans.xsd 
+       		http://www.springframework.org/schema/mvc 
+       		http://www.springframework.org/schema/mvc/spring-mvc.xsd 
+       		http://www.springframework.org/schema/context        		
+       		http://www.springframework.org/schema/context/spring-context.xsd 
+       		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+       		
+
+      
+    <mvc:annotation-driven />
+    <context:annotation-config />
+     <context:component-scan base-package="com.  .activity.controller,com.  .activity.processor" />
+	<bean id="gacConfig" class="com.  .prof_utilities.config.MedscapeAppConfig" lazy-init="false"  factory-method="createUniqueInstance">
+		  <constructor-arg type="org.springframework.core.io.Resource" value="classpath:/GAC.xml"/> 
+		 <!--  <constructor-arg type="org.springframework.core.io.Resource" value="classpath:/activityServiceTest_GAC.xml"/> -->
+	</bean>
+	
+	<context:property-placeholder properties-ref="gacConfig"/> 
+	
+<!-- 	<bean id="authServiceAdapter" class="com.  .auth.service.adapter.HttpAuthServiceAdapter">
+		<property name="restOperations">
+			<bean class="org.springframework.web.client.RestTemplate"/>
+		</property>
+	</bean> -->
+<!-- 
+	<bean id="encrypter" class="com.  .prof_utilities.util.AESCryptor">
+			<constructor-arg value="cookieKey"/>
+	</bean>
+	
+	<bean id="guidFilter" class="com.  .activity.filter.GuidFilter"/> -->
+		
+<!-- 	<bean id="userResponseRequestMatcher" class="com.  .activity.matcher.UserResponseRequestMatcher"/>
+	
+	<bean id="userResponse-workflow-chain" class="com.  .activity.chain.AuthAgentSecurityFilterChain">
+		<property name="requestMatcher" ref="userResponseRequestMatcher"/>
+		<property name="filters">
+			<list>
+			 <ref bean="guidFilter"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="userResponseRequestFilterChainProxy" class="org.springframework.security.web.FilterChainProxy">
+		<constructor-arg>
+			<list>
+				<ref bean="userResponse-workflow-chain"/>
+			</list>
+		</constructor-arg>
+	</bean> -->
+	
+	<!--<alias name="registrationDataSource" alias="authDataSource"/>		
+	      
+        	 Mock Objects 
+	<bean id="servletContext" class="org.springframework.mock.web.MockServletContext"/>
+	<bean id="request" class="org.springframework.mock.web.MockHttpServletRequest"/>
+	<bean id="response" class="org.springframework.mock.web.MockHttpServletResponse"/>
+	<bean id="session" class="org.springframework.mock.web.MockHttpSession"/>	
+	<bean id="filterConfig" class="org.springframework.mock.web.MockFilterConfig"/>
+	<bean id="filterChain" class="org.springframework.mock.web.MockFilterChain"/>	
+	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/>
+	<bean id="profileAdaptor" class="com.  .activity.adaptor.ProfileAdaptor"/>-->	
+	<bean id="validationService" class="com.  .activity.qna.service.ValidationRuleService">
+		<property name="creditTypeMap" ref="creditMap"/>
+	</bean>
+	<util:map id="creditMap">
+        <entry key="8" value="3"/>
+        <entry key="10" value="1"/>
+        <entry key="11" value="8"/>
+        <entry key="12" value="7"/>
+        <entry key="13" value="5"/>
+        <entry key="23" value="4"/>
+    </util:map>
+	
+	
+	<bean id="cmeResultRowMapper"
+	class="com.  .activity.qna.db.jdbc.rowmappers.CMEResultRowMapper">
+</bean>
+
+	<bean id="getCMEResultStoredProcedure"
+		class="com.  .activity.qna.storedprocedures.GetCMEResultStoredProcedure">
+		<constructor-arg ref="activityDataSource"></constructor-arg>
+		<constructor-arg value="PKG_CMERESULT.SP_GET_CMERESULT"></constructor-arg>
+		<constructor-arg ref="cmeResultRowMapper"></constructor-arg>
+	</bean>
+	
+
+	<bean id="saveCMEResultStoredProcedure"
+		class="com.  .activity.qna.storedprocedures.SaveCMEResultStoredProcedure">
+		<constructor-arg ref="activityDataSource"></constructor-arg>
+		<constructor-arg value="PKG_CMERESULT.SP_SAVE_CMERESULT"></constructor-arg>
+	</bean>
+
+	<bean id="updateCMEResultStoredProcedure"
+		class="com.  .activity.qna.storedprocedures.UpdateCMEResultStoredProcedure">
+		<constructor-arg ref="activityDataSource"></constructor-arg>
+		<constructor-arg value="PKG_CMERESULT.SP_UPDATE_CMERESULT"></constructor-arg>
+	</bean>
+
+	<bean id="jdbcActivityDAO" class="com.  .activity.qna.dao.JDBCActivityDAO">
+		<property name="dataSource" ref="activityDataSource" />
+		<property name="getCMEResultStoredProcedure" ref="getCMEResultStoredProcedure" />
+		<property name="saveCMEResultStoredProcedure" ref="saveCMEResultStoredProcedure" />
+		<property name="updateCMEResultStoredProcedure" ref="updateCMEResultStoredProcedure" />
+		
+	</bean>
+
+	<!-- ActivityManagerImpl Bean Creation -->
+	<bean id="activityManagerImpl" class="com.  .activity.qna.manager.ActivityManagerImpl">
+		<property name="jdbcActivityDAO" ref="jdbcActivityDAO" />
+		<property name="mocServiceImpl" ref="mocServiceImpl"/>
+		<property name="kafkaMessageProducer" ref="kafkaMessageProducer"/>
+	</bean>
+
+	<bean id="qnaManagerImpl" class="com.  .activity.qna.manager.QNAManagerImpl">
+		<property name="activityManagerImpl" ref="activityManagerImpl"></property>
+		<!--<property name="questionnaireManagerImpl" ref="questionnaireManagerImpl"></property> 
+			<property name="userResponseManagerImpl" ref="userResponseManagerImpl"></property> -->
+	</bean>
+	
+	
+	
+	<bean id="mocServiceImpl" class="com.  .activity.qna.moc.MocServiceImpl">
+		<property name="mocActivityDAOImpl" ref="mocActivityDAO"/>
+	</bean>
+
+
+	<bean id="mocActivityDAO" class="com.  .activity.qna.moc.dao.MocActivityDAOImpl">
+    	<property name="activityDataSource" ref="activityDataSource"></property>
+    </bean>
+
+
+
+    <!-- MOC Service layer -->
+	<bean id="kafkaMessageProducer" class="com.  .activity.qna.messaging.KafkaMessageProducer"/>
+
+
+	
+	<bean id="qnaAdaptor" class="com.  .activity.adaptor.QNAAdaptor"/>
+	
+	
+	<bean id="activityDataSource" class="org.springframework.jndi.JndiObjectFactoryBean" primary="true" >
+			<property name="jndiName" value="java:comp/env/jdbc/QuestionnaireDS"/>
+	</bean>
+
+	<bean id="medscapeDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/jdbc/medscapeDS"/>
+	</bean>
+
+
+		<!-- QuestionnaireManagerImpl Bean Creation  NOt required now>
+	 <bean id="questionnaireManagerImpl" class="com.  .qna.core.manager.QuestionnaireManagerImpl">
+		<property name="jdbcQuestionnaireDAO" ref="jdbcQuestionnaireDAO"></property>
+		 <property name="questionnaireCacheManager" ref="questionnaireCacheManager"></property>
+
+	</bean>
+	-->
+	
+	<bean id="profileServiceAdapter" class="com.  .profile_service.adapter.HttpProfileServiceAdapter" />
+
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="activityDataSource"/>
+	</bean>
+
+	<bean id="mocJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="medscapeDataSource"/>
+	</bean>
+
+	<bean id ="mocActivityTrackerDAOImpl" class="com.  .activitytracker.dao.MocActivityTrackerDAOImpl">
+		<property name="jdbcTemplate" ref="mocJdbcTemplate"></property>
+	</bean>
+
+	<bean id="cmeActivityTrackerDaoImpl" class="com.  .activitytracker.dao.CmeActivityTrackerDaoImpl">
+		<property name="mocActivityTrackerDAOImpl" ref="mocActivityTrackerDAOImpl"></property>
+		<property name="medscapeDataSource" ref="medscapeDataSource"/>
+	</bean>
+
+</beans>

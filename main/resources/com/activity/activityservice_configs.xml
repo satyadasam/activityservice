@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<global>
+		<domainServer category="www">www$$GLOBAL_DOMAIN_SERVER$$.medscape.com</domainServer>
+        <domainServer category="cme">www$$GLOBAL_DOMAIN_SERVER$$.medscape.org</domainServer>
+        <domainServer category="emedicine">emedicine$$GLOBAL_DOMAIN_SERVER$$.medscape.com</domainServer>
+        <domainServer category="wp">wp$$GLOBAL_DOMAIN_SERVER$$.medscape.com</domainServer>
+        <domainServer category="reference">reference$$GLOBAL_DOMAIN_SERVER$$.medscape.com</domainServer>
+        <domainServer category="tho">theheart$$GLOBAL_DOMAIN_SERVER$$.medscape.org</domainServer>
+        <domainServer category="  ">education$$GLOBAL_DOMAIN_SERVER$$.  .com</domainServer>
+		<domainServer category="connect">  connect$$GLOBAL_DOMAIN_SERVER$$.medscape.com</domainServer>
+        <domainServer category="france">francais$$GLOBAL_DOMAIN_SERVER$$.medscape.com</domainServer>
+        <domainServer category="medscapemedizin">deutsch$$GLOBAL_DOMAIN_SERVER$$.medscape.com</domainServer>
+        <domainServer category="portugues">portugues$$GLOBAL_DOMAIN_SERVER$$.medscape.com</domainServer>
+		<domainServer category="espanol">espanol$$GLOBAL_DOMAIN_SERVER$$.medscape.com</domainServer>		
+		<keysDir>/  /config</keysDir>		
+		<!-- <profileServiceUrl>$$GLOBAL_PROFILESERVICE_URL$$</profileServiceUrl> -->
+		<profileServiceUrl>http://profile01-app-dev04.prf.iad1.medscape.com:8080/ws/services/ProfileService</profileServiceUrl>
+		<qnaServiceUrl>http://qnaservice01-app-dev01.prf.iad1.medscape.com:8080/qnaservice</qnaServiceUrl>
+		<!--<qnaServiceUrl>http://localhost:8080/qnaservice</qnaServiceUrl>-->
+		<eventServiceUrl timeout="400">$$GLOBAL_EVENTSERVICE_URL$$</eventServiceUrl>
+		<profileEventServiceUrl timeout="200">$$GLOBAL_PROFILE_EVENT_SERVICE_URL$$</profileEventServiceUrl>
+        <userCampaignsServiceUrl timeout="400">$$GLOBAL_USER_CAMPAIGNS_SERVICE_URL$$</userCampaignsServiceUrl>
+        <pars>
+	    <endPointUrl>https://sandboxparsii.accme.org/services/accmelearnerservice.svc/IACCMELearnerService</endPointUrl>
+	    <userName>accmesandboxwebservices@  .net</userName>
+	    <password>RWH9MQfN</password>
+	    <providerId>0007105</providerId>
+	    <mocFeatureFlag>on</mocFeatureFlag>
+	    <kafkaBrokers>kafas31d-shr-08.portal.  .com:9092\,kafas32d-shr-08.portal.  .com:9092</kafkaBrokers>
+	    <zkAddress>zooas31d-con-08.portal.  .com:2181\,zooas32d-con-08.portal.  .com:2181\,zooas33d-con-08.portal.  .com:2181</zkAddress>
+	    <timeout>5000</timeout>
+	    <parsProcessorTopic>pars-processor</parsProcessorTopic>
+	    <parsTopic>pars</parsTopic>
+	    <parsAccepted>pars-accepted</parsAccepted>
+	    <parsError>pars-error</parsError>
+	    <useProxy>false</useProxy>
+	    <proxyAddress>http://iad1.webproxy.portal.  .com</proxyAddress>
+	    <proxyPort>3128</proxyPort>
+	    <productionTeamEmail>pellington@  .net</productionTeamEmail>
+	    <consumer>
+	        <threads>2</threads>
+	        <consumerGroup>pars-procsessor-group</consumerGroup>
+	        <autoCommit>true</autoCommit>
+	        <autoCommitInterval>5000</autoCommitInterval>
+	        <offsetReset>latest</offsetReset>
+	    </consumer>
+	    <producer>
+	        <acks>1</acks>
+	        <requestTimeout>10000</requestTimeout>
+	        <retries>3</retries>
+	    </producer>
+	</pars>
+	</global>
+	<registration>
+		<cookieKeyLocation>/  /medscape_includes/cookies/cookieKey</cookieKeyLocation>
+		<subDomain>.medscape.com</subDomain>
+	</registration>
+	
+</config>
