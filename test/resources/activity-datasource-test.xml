@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd       
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+	<mvc:annotation-driven/>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:datasource.properties</value>
+                <!--
+                Here one can override the properties by his own ones.
+                For instance, to point to a different DB schema.
+
+                Properties defined in later files will override
+                properties defined earlier files, in case of overlapping keys.
+                Hence, make sure that the most specific files are the last
+                ones in the given list of locations.
+
+                Please execute the following command once in the ...\CPAdmin\src\test\resources\ directory
+                in order to ignore the my_datasource.properties file during commit:
+                > svn propset svn:ignore my_datasource.properties
+                -->
+                <value>classpath:my_datasource.properties</value>
+            </list>
+        </property>
+        <property name="ignoreResourceNotFound" value="true"/>
+    </bean>
+   
+  <!--   <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+        p:driverClassName="oracle.jdbc.OracleDriver"
+        p:url="jdbc:oracle:thin:@racsn01d-shr-08.portal.  .com:1521:PDCMTRTI"
+        p:username="qa_app"
+        p:password="qa_app" />   -->
+
+    	<bean id="qnaDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+        p:driverClassName="oracle.jdbc.OracleDriver"
+        p:url="jdbc:oracle:thin:@racsn01d-shr-08.portal.  .com:1521:PDCMTRTI"
+        p:username="qa_app"
+        p:password="qa_app" 
+        primary="true"
+        />  
+    
+    	<bean id="weDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+        p:driverClassName="oracle.jdbc.OracleDriver"
+        p:url="jdbc:oracle:thin:@racsn01d-shr-08.portal.  .com:1521:PDCMTRTI"
+        p:username="  _edu"
+        p:password="  _edu" 
+        primary="false"
+         />     
+        
+        <bean id="registrationDataSource"
+        class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+        p:driverClassName="oracle.jdbc.OracleDriver"
+        p:url="jdbc:oracle:thin:@racsn01d-shr-08.portal.  .com:1521:PDCMTRTI"
+        p:username="reguser"
+        p:password="reguser" 
+        primary="false"/>
+        
+</beans>
